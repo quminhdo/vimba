@@ -37,6 +37,7 @@
 #include "FrameObserver.h"
 
 #include "TransformImage.h"
+#include "opencv2/opencv.hpp"
 
 namespace AVT {
 namespace VmbAPI {
