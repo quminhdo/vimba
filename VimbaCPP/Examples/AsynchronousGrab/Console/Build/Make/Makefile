@@ -32,8 +32,8 @@ OPENCV_CFLAGS       = $(shell $(PKGCFG) --cflags opencv)
 
 OPENCV_LIBS         = $(shell $(PKGCFG) --libs opencv)
 
-CFLAGS = `pkg-config --cflags opencv`
-LIBS = `pkg-config --libs opencv`
+OPENCV_CFLAGS = `pkg-config --cflags opencv`
+OPENCV_LIBS = `pkg-config --libs opencv`
 
 LIBS                = $(VIMBACPP_LIBS) \
                       $(VIMBAIMAGETRANSFORM_LIBS) \
