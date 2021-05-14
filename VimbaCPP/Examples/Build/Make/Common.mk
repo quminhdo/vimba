@@ -69,7 +69,7 @@ endif
 PKGCFG          = pkg-config
 MKDIR           = mkdir
 RM              = rm
-CXX             = g++
+CXX             = g++ -std=c++11
 MAKE            = make
 CP              = cp
 
