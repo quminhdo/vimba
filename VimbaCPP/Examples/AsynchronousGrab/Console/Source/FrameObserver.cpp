@@ -331,7 +331,16 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
                         err = VmbErrorInvalidValue;
                     }
                     else
-                    {
+                    {   
+                        if (VmbPixelFormatMono8 == ePixelFormat){
+                            std::cout << "Mono8" << std::endl;
+                        }
+                        else if (VmbPixelFormatRgb8 == ePixelFormat){
+                            std::cout << "Rgb8" << std::endl;
+                        }
+                        else{
+                            std::cout << "other format" << std::endl;
+                        }
                         VmbUint32_t nImageSize = 0; 
                         err = pFrame->GetImageSize( nImageSize );
                         if ( VmbErrorSuccess == err )
@@ -351,7 +360,7 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
                                         err = pFrame->GetImage( pImage );
                                         if ( VmbErrorSuccess == err )
                                         {
-                                            Mat cvMat(nHeight, nWidth, CV_8UC1, pImage);
+                                            Mat cvMat(nHeight, nWidth, CV_8UC3, pImage);
                                             char filename[1000];
                                             sprintf(filename, "gsc_%03d.jpg", (int) nFrameID);
                                             imwrite(filename, cvMat);
