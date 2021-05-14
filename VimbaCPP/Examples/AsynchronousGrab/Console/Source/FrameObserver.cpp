@@ -312,6 +312,84 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
         if( FrameInfos_Off != m_eFrameInfos )
         {
             ShowFrameInfos( pFrame);
+            err = pFrame->GetReceiveStatus( status );
+            if (    VmbErrorSuccess == err
+                 && VmbFrameStatusComplete == status )
+            {
+                VmbPixelFormatType ePixelFormat = VmbPixelFormatMono8;
+                err = pFrame->GetPixelFormat( ePixelFormat );
+                if ( VmbErrorSuccess == err )
+                {
+                    if (    ( VmbPixelFormatMono8 != ePixelFormat )
+                        &&  ( VmbPixelFormatRgb8 != ePixelFormat ))
+                    {
+                        err = VmbErrorInvalidValue;
+                    }
+                    else
+                    {
+                        VmbUint32_t nImageSize = 0; 
+                        err = pFrame->GetImageSize( nImageSize );
+                        if ( VmbErrorSuccess == err )
+                        {
+                            VmbUint32_t nWidth = 0;
+                            err = pFrame->GetWidth( nWidth );
+                            if ( VmbErrorSuccess == err )
+                            {
+                                VmbUint32_t nHeight = 0;
+                                err = pFrame->GetHeight( nHeight );
+                                if ( VmbErrorSuccess == err )
+                                {
+                                    VmbUchar_t *pImage = NULL;
+                                    err = pFrame->GetImage( pImage );
+                                    if ( VmbErrorSuccess == err )
+                                    {
+                                        AVTBitmap bitmap;
+
+                                        if ( VmbPixelFormatRgb8 == ePixelFormat )
+                                        {
+                                            bitmap.colorCode = ColorCodeRGB24;
+                                        }
+                                        else
+                                        {
+                                            bitmap.colorCode = ColorCodeMono8;
+                                        }
+
+                                        bitmap.bufferSize = nImageSize;
+                                        bitmap.width = nWidth;
+                                        bitmap.height = nHeight;
+
+                                        // Create the bitmap
+                                        if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
+                                        {
+                                            std::cout << "Could not create bitmap.\n";
+                                            err = VmbErrorResources;
+                                        }
+                                        else
+                                        {
+                                            // Save the bitmap
+                                            if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
+                                            {
+                                                std::cout << "Could not write bitmap to file.\n";
+                                                err = VmbErrorOther;
+                                            }
+                                            else
+                                            {
+                                                std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
+                                                // Release the bitmap's buffer
+                                                if ( 0 == AVTReleaseBitmap( &bitmap ))
+                                                {
+                                                    std::cout << "Could not release the bitmap.\n";
+                                                    err = VmbErrorInternalFault;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         VmbFrameStatusType status;
         VmbErrorType Result;
