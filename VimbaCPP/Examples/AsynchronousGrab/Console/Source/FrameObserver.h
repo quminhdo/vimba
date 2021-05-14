@@ -35,6 +35,7 @@
 #ifdef WIN32
 #include <Windows.h>
 #endif //WIN32
+#include <opencv2/opencv.hpp>
 
 namespace AVT {
 namespace VmbAPI {
