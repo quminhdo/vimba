@@ -22,23 +22,19 @@ include $(MAKE_INCLUDE_DIR)/VimbaImageTransform.mk
 SOURCE_DIR          = $(PROJECT_DIR)/Source
 INCLUDE_DIRS        = -I$(SOURCE_DIR) \
                       -I$(EXAMPLES_DIR) \
-		      		-I$(OBJ_DIR)
-
-# OPENCV_CFLAGS       = $(shell $(PKGCFG) --cflags opencv)
-
-# OPENCV_LIBS         = $(shell $(PKGCFG) --libs opencv)
+		      		        -I$(OBJ_DIR)
 
 OPENCV_CFLAGS       = $(shell $(PKGCFG) --cflags opencv)
 
 OPENCV_LIBS         = $(shell $(PKGCFG) --libs opencv)
 
-OPENCV_CFLAGS = `pkg-config --cflags opencv`
-OPENCV_LIBS = `pkg-config --libs opencv`
+# OPENCV_CFLAGS = `pkg-config --cflags opencv`
+# OPENCV_LIBS = `pkg-config --libs opencv`
 
 LIBS                = $(VIMBACPP_LIBS) \
                       $(VIMBAIMAGETRANSFORM_LIBS) \
                       $(OPENCV_LIBS) \
-					  -lrt
+					           -lrt
 
 DEFINES             =
 
