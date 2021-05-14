@@ -307,6 +307,7 @@ void FrameObserver::ShowFrameInfos( const FramePtr &pFrame )
 //
 void FrameObserver::FrameReceived( const FramePtr pFrame )
 {
+    VmbErrorType err = VmbErrorSuccess;
     if(! SP_ISNULL( pFrame ) )
     {
         if( FrameInfos_Off != m_eFrameInfos )
@@ -339,49 +340,17 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
                                 err = pFrame->GetHeight( nHeight );
                                 if ( VmbErrorSuccess == err )
                                 {
-                                    VmbUchar_t *pImage = NULL;
-                                    err = pFrame->GetImage( pImage );
-                                    if ( VmbErrorSuccess == err )
-                                    {
-                                        AVTBitmap bitmap;
-
-                                        if ( VmbPixelFormatRgb8 == ePixelFormat )
+                                    VmbUint64_t nFrameID = 0;
+                                    err = pFrame->GetFrameID( nFrameID );
+                                    if ( VmbErrorSuccess == err ){
+                                        VmbUchar_t *pImage = NULL;
+                                        err = pFrame->GetImage( pImage );
+                                        if ( VmbErrorSuccess == err )
                                         {
-                                            bitmap.colorCode = ColorCodeRGB24;
-                                        }
-                                        else
-                                        {
-                                            bitmap.colorCode = ColorCodeMono8;
-                                        }
-
-                                        bitmap.bufferSize = nImageSize;
-                                        bitmap.width = nWidth;
-                                        bitmap.height = nHeight;
-
-                                        // Create the bitmap
-                                        if ( 0 == AVTCreateBitmap( &bitmap, pImage ))
-                                        {
-                                            std::cout << "Could not create bitmap.\n";
-                                            err = VmbErrorResources;
-                                        }
-                                        else
-                                        {
-                                            // Save the bitmap
-                                            if ( 0 == AVTWriteBitmapToFile( &bitmap, pFileName ))
-                                            {
-                                                std::cout << "Could not write bitmap to file.\n";
-                                                err = VmbErrorOther;
-                                            }
-                                            else
-                                            {
-                                                std::cout << "Bitmap successfully written to file \"" << pFileName << "\"\n" ;
-                                                // Release the bitmap's buffer
-                                                if ( 0 == AVTReleaseBitmap( &bitmap ))
-                                                {
-                                                    std::cout << "Could not release the bitmap.\n";
-                                                    err = VmbErrorInternalFault;
-                                                }
-                                            }
+                                            cv::Mat cvMat = cv::Mat(nHeight, nWidth, cv::CV_8UC1, pImage);
+                                            char filename[1000];
+                                            sprintf(filename, "gsc_%03d.jpg", nFrameID);
+                                            cv::imwrite(filename, cvMat);
                                         }
                                     }
                                 }
