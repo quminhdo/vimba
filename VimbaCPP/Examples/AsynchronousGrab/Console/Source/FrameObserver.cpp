@@ -361,7 +361,7 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
                                         if ( VmbErrorSuccess == err )
                                         {
                                             Mat cvMat(nHeight, nWidth, CV_8UC3, pImage);
-                                            cvtColor(cvMat, cvMat, COLOR_RGB2BGR)
+                                            cvtColor(cvMat, cvMat, COLOR_RGB2BGR);
                                             char filename[1000];
                                             sprintf(filename, "gsc_%03d.jpg", (int) nFrameID);
                                             imwrite(filename, cvMat);
