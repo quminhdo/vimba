@@ -36,6 +36,7 @@
 #include <Windows.h>
 #endif //WIN32
 #include "opencv2/opencv.hpp"
+#include "opencv2/core/core.hpp"
 
 namespace AVT {
 namespace VmbAPI {

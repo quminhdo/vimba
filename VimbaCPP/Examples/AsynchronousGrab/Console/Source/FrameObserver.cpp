@@ -38,6 +38,8 @@
 
 #include "TransformImage.h"
 #include "opencv2/opencv.hpp"
+#include "opencv2/core/core.hpp"
+using namespace cv;
 
 namespace AVT {
 namespace VmbAPI {
@@ -349,10 +351,10 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
                                         err = pFrame->GetImage( pImage );
                                         if ( VmbErrorSuccess == err )
                                         {
-                                            cv::Mat cvMat = cv::Mat(nHeight, nWidth, cv::CV_8UC1, pImage);
+                                            Mat cvMat(nHeight, nWidth, CV_8UC1, pImage);
                                             char filename[1000];
                                             sprintf(filename, "gsc_%03d.jpg", (int) nFrameID);
-                                            cv::imwrite(filename, cvMat);
+                                            imwrite(filename, cvMat);
                                         }
                                     }
                                 }
