@@ -23,9 +23,9 @@ SOURCE_DIR          = $(PROJECT_DIR)/Source
 INCLUDE_DIRS        = -I$(SOURCE_DIR) \
                       -I$(EXAMPLES_DIR) \
 
-OPENCV_CFLAGS       = $(shell $(PKGCFG) --cflags opencv)
+OPENCV_CFLAGS       = $(shell $(PKGCFG) --cflags opencv4)
 
-OPENCV_LIBS         = $(shell $(PKGCFG) --libs opencv)
+OPENCV_LIBS         = $(shell $(PKGCFG) --libs opencv4)
 
 # OPENCV_CFLAGS = `pkg-config --cflags opencv`
 # OPENCV_LIBS = `pkg-config --libs opencv`
