@@ -35,7 +35,7 @@
 #include <QMutex>
 
 #include <VimbaCPP/Include/VimbaCPP.h>
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 
 namespace AVT {
 namespace VmbAPI {
