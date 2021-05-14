@@ -23,15 +23,21 @@ SOURCE_DIR          = $(PROJECT_DIR)/Source
 INCLUDE_DIRS        = -I$(SOURCE_DIR) \
                       -I$(EXAMPLES_DIR) \
 
+OPENCV_CFLAGS       = $(shell $(PKGCFG) --cflags opencv)
+
+OPENCV_LIBS         = $(shell $(PKGCFG) --libs opencv)
+
 LIBS                = $(VIMBACPP_LIBS) \
                       $(VIMBAIMAGETRANSFORM_LIBS) \
+                      $(OPENCV_LIBS) \
 					  -lrt
 
 DEFINES             =
 
 CFLAGS              = $(COMMON_CFLAGS) \
                       $(VIMBACPP_CFLAGS) \
-                      $(VIMBAIMAGETRANSFORM_CFLAGS)
+                      $(VIMBAIMAGETRANSFORM_CFLAGS)\
+                      $(OPENCV_CFLAGS)
 
 OBJ_FILES           = $(OBJ_DIR)/ApiController.o \
                       $(OBJ_DIR)/FrameObserver.o \

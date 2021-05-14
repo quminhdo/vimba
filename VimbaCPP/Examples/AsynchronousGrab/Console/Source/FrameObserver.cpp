@@ -308,6 +308,7 @@ void FrameObserver::ShowFrameInfos( const FramePtr &pFrame )
 void FrameObserver::FrameReceived( const FramePtr pFrame )
 {
     VmbErrorType err = VmbErrorSuccess;
+    VmbFrameStatusType status;
     if(! SP_ISNULL( pFrame ) )
     {
         if( FrameInfos_Off != m_eFrameInfos )
@@ -349,7 +350,7 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
                                         {
                                             cv::Mat cvMat = cv::Mat(nHeight, nWidth, cv::CV_8UC1, pImage);
                                             char filename[1000];
-                                            sprintf(filename, "gsc_%03d.jpg", nFrameID);
+                                            sprintf(filename, "gsc_%03d.jpg", (int) nFrameID);
                                             cv::imwrite(filename, cvMat);
                                         }
                                     }
@@ -360,7 +361,7 @@ void FrameObserver::FrameReceived( const FramePtr pFrame )
                 }
             }
         }
-        VmbFrameStatusType status;
+        // VmbFrameStatusType status;
         VmbErrorType Result;
         Result = SP_ACCESS( pFrame)->GetReceiveStatus( status);
         if( VmbErrorSuccess == Result && VmbFrameStatusComplete == status)
