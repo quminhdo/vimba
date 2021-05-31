@@ -3,16 +3,39 @@
 namespace AVT {
 namespace VmbAPI {
 
-// Constructor for the FrameObserver class
-FrameObserver::FrameObserver(CameraPtr pCamera) : IFrameObserver(pCamera){}
+class FrameObserver : public IFrameObserver {
 
-// Frame callback notifies about incoming frames
-void FrameObserver::FrameReceived(const FramePtr pFrame) {
-    // Send notification to working thread
-    // Do not apply image processing within this callback (performance) 
-    // When the frame has been processed, requeue it 
-    m_pCamera->QueueFrame(pFrame);
-}
+    public:
+    // In your contructor call the constructor of the base class // and pass a camera object
+    FrameObserver( CameraPtr pCamera ) : IFrameObserver( pCamera ) {
+        // Put your initialization code here
+    }
+
+    void FrameReceived( const FramePtr pFrame ) {
+        VmbFrameStatusType eReceiveStatus;
+        if ( VmbErrorSuccess == pFrame->GetReceiveStatus( eReceiveStatus ) ) {
+            if ( VmbFrameStatusComplete == eReiveStatus ) {
+                // Put your code here to react on a successfully received frame
+            }
+            else {
+                // Put your code here to react on an unsuccessfully received frame
+            } 
+        }
+        // When you are finished copying the frame, re-queue it
+        m_pCamera->QueueFrame( pFrame ); 
+    }
+};
+
+// // Constructor for the FrameObserver class
+// FrameObserver::FrameObserver(CameraPtr pCamera) : IFrameObserver(pCamera){}
+
+// // Frame callback notifies about incoming frames
+// void FrameObserver::FrameReceived(const FramePtr pFrame) {
+//     // Send notification to working thread
+//     // Do not apply image processing within this callback (performance) 
+//     // When the frame has been processed, requeue it 
+//     m_pCamera->QueueFrame(pFrame);
+// }
 
 void Vimba::RunExample(void) {
     VmbInt64_t nPLS; // Payload size value
