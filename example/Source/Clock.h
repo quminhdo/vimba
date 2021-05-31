@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        Clock.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of a platform independent Sleep.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,33 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_CLOCK
+#define AVT_VMBAPI_CLOCK
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <VimbaCPPCommon.h>
+class Clock
+{
+  public:
+    Clock();
+    virtual ~Clock();
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+    virtual void Reset();
+    virtual void SetStartTime();
+    virtual void SetStartTime( double dStartTime );
+    virtual double GetTime() const;
+
+    static double GetAbsTime();
+
+    static void Sleep( double dTime );
+    static void SleepMS( unsigned long nTimeMS );
+    static void SleepAbs( double dAbsTime );
+
+  protected:
+    double m_dStartTime;
+};
+
+}} //namespace AVT::VmbAPI
+
+#endif //AVT_VMBAPI_CLOCK

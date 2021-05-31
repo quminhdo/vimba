@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        Helper.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of helper classes (types)
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,30 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_HELPER_H
+#define AVT_VMBAPI_HELPER_H
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaCPP/Include/BasicLockable.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+template <class T>
+class LockableVector : public virtual BasicLockable
+{
+  public:
+    std::vector<T> Vector;
+};
+
+template <class T1, class T2>
+class LockableMap : public virtual BasicLockable
+{
+  public:
+    std::map<T1, T2> Map;
+};
+
+char const * const AVT_IP_OR_MAC_ADDRESS = "IP_OR_MAC@";
+
+}} // AVT::VmbAPI
+
+#endif

@@ -6,9 +6,9 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        BasicLockable.cpp
 
-  Description: Main include file for Vimba CPP API.
+  Description: Implementation of class AVT::VmbAPI::BasicLockable.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +25,33 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#include <VimbaCPP/Include/BasicLockable.h>
+#include <VimbaCPP/Include/LoggerDefines.h>
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <VimbaCPPCommon.h>
+BasicLockable::BasicLockable()
+    :   m_pMutex( MutexPtr( new Mutex() ))
+{
+}
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+BasicLockable::~BasicLockable()
+{
+}
+
+BasicLockable::BasicLockable( MutexPtr pMutex )
+    :   m_pMutex( pMutex )
+{
+}
+
+MutexPtr& BasicLockable::GetMutex()
+{
+    return m_pMutex;
+}
+const MutexPtr& BasicLockable::GetMutex() const
+{
+    return m_pMutex;
+}
+
+}} //namespace AVT::VmbAPI

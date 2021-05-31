@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        IntFeature.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of class AVT::VmbAPI::IntFeature.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,33 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_INTFEATURE_H
+#define AVT_VMBAPI_INTFEATURE_H
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaC/Include/VimbaC.h>
+#include <VimbaCPP/Include/VimbaCPPCommon.h>
+#include <VimbaCPP/Source/BaseFeature.h>
+#include <VimbaCPP/Include/FeatureContainer.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+class IntFeature : public BaseFeature 
+{
+  public:
+    IntFeature( const VmbFeatureInfo_t *featureInfo, FeatureContainer* const pFeatureContainer );
+
+    IMEXPORT virtual VmbErrorType GetValue( VmbInt64_t &value ) const;
+
+    IMEXPORT virtual VmbErrorType SetValue( const VmbInt64_t &value );
+
+    IMEXPORT virtual VmbErrorType GetRange( VmbInt64_t &minimum, VmbInt64_t &maximum ) const;
+
+    IMEXPORT virtual VmbErrorType HasIncrement( VmbBool_t &incrementSupported) const;
+
+    IMEXPORT virtual VmbErrorType GetIncrement( VmbInt64_t &increment ) const;
+};
+
+}} // namespace AVT::VmbAPI
+
+#endif

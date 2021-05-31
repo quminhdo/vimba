@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        Condition.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of a condition class.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,34 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_CONDITION_H
+#define AVT_VMBAPI_CONDITION_H
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaCPP/Include/Mutex.h>
+#include <VimbaCPP/Source/Semaphore.h>
+#include <VimbaCPP/Include/BasicLockable.h>
+#include <VimbaCPP/Include/SharedPointerDefines.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+class Condition
+{
+  private:
+    unsigned long           m_nReleaseNumber;
+    unsigned long           m_nWaiterNumber;
+    bool                    m_bLocked;
+    SP_DECL( Semaphore )    m_Semaphore;        // A binary semaphore (non recursive mutex)
+
+  public:
+    Condition();
+
+    void Wait( const BasicLockable &rLockable );
+    void Wait( const MutexPtr &rMutex );
+
+    void Signal( bool bSingle = false );
+};
+
+}} // namespace AVT::VmbAPI
+
+#endif //CONDITION_H

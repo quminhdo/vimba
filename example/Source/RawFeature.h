@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        RawFeature.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of class AVT::VmbAPI::RawFeature.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,28 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_RAWFEATURE_H
+#define AVT_VMBAPI_RAWFEATURE_H
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaC/Include/VimbaC.h>
+#include <VimbaCPP/Include/VimbaCPPCommon.h>
+#include <VimbaCPP/Source/BaseFeature.h>
+#include <VimbaCPP/Include/FeatureContainer.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+class RawFeature : public BaseFeature 
+{
+  public:
+    RawFeature( const VmbFeatureInfo_t *featureInfo, FeatureContainer *pFeatureContainer );
+
+  private:
+    // Array functions to pass data across DLL boundaries
+    IMEXPORT virtual VmbErrorType GetValue( VmbUchar_t *pValue, VmbUint32_t &size, VmbUint32_t &sizeFilled ) const;
+    IMEXPORT virtual VmbErrorType SetValue( const VmbUchar_t *pValue, VmbUint32_t size );
+};
+
+}} // namespace AVT::VmbAPI
+
+#endif

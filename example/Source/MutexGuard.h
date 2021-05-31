@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        MutexGuard.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of a mutex helper class for locking and unlocking.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,34 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_MUTEXGUARD
+#define AVT_VMBAPI_MUTEXGUARD
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaCPP/Include/Mutex.h>
+#include <VimbaCPP/Include/BasicLockable.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT
+{
+namespace VmbAPI
+{
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+class MutexGuard
+{
+  public:
+    MutexGuard();
+    MutexGuard( MutexPtr &pMutex );
+    MutexGuard( BasicLockablePtr pLockable );
+    MutexGuard( const BasicLockable &rLockable );
+    ~MutexGuard();
+
+    void Protect();
+    bool Release();
+
+  protected:
+    Mutex  *m_pMutex;
+};
+
+} //namespace VmbAPI
+} //namespace AVT
+
+#endif //AVT_VMBAPI_MUTEXGUARD

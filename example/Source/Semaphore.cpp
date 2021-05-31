@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        Semaphore.cpp
 
-  Description: Main include file for Vimba CPP API.
+  Description: Implementation of an semaphore class.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,68 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#include <math.h>
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaCPP/Source/Semaphore.h>
+#include <VimbaCPP/Include/LoggerDefines.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+Semaphore::Semaphore( int nInit, int nMax )
+#ifdef WIN32
+    :   m_hSemaphore( NULL )
+#endif
+{
+#ifdef WIN32
+    m_hSemaphore = CreateSemaphore( NULL, nInit, nMax, NULL );
+    if( NULL == m_hSemaphore )
+    {
+        LOG_FREE_TEXT( "Could not create semaphore." );
+        throw std::bad_alloc();
+    }
+#else
+    sem_init( &m_Semaphore, false, (unsigned int)nInit );
+#endif
+}
+
+Semaphore::Semaphore( const Semaphore& )
+{
+    // No compiler generated copy ctor
+}
+
+Semaphore& Semaphore::operator=( const Semaphore& )
+{
+    // No assignment operator
+    return *this;
+}
+
+Semaphore::~Semaphore()
+{  
+#ifdef WIN32
+    CloseHandle( m_hSemaphore );
+#else
+    sem_destroy( &m_Semaphore );
+#endif
+}
+
+void Semaphore::Acquire()
+{
+#ifdef WIN32
+    WaitForSingleObject( m_hSemaphore, INFINITE );
+#else
+    sem_wait( &m_Semaphore );
+#endif
+}
+
+void Semaphore::Release()
+{
+#ifdef WIN32
+    ReleaseSemaphore( m_hSemaphore, 1, NULL );
+#else
+    sem_post( &m_Semaphore );
+#endif
+}
+
+} //namespace VmbAPI
+} //namespace AVT

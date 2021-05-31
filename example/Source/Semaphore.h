@@ -6,9 +6,10 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        Semaphore.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of an semaphore class.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +26,42 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_SEMAPHORE
+#define AVT_VMBAPI_SEMAPHORE
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaCPP/Include/VimbaCPPCommon.h>
 
-#include <VimbaCPPCommon.h>
+#ifdef WIN32
+    #include <windows.h>
+#else
+    #include <semaphore.h>
+#endif
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+namespace AVT {
+namespace VmbAPI {
+
+class Semaphore
+{
+  public:
+    Semaphore( int nInit = 0, int nMax = 1 );
+    ~Semaphore();
+
+    void Acquire();
+    void Release();
+
+  private:
+    // No copy ctor
+    Semaphore( const Semaphore &rSemaphore );
+    // No assignment
+    Semaphore& operator=( const Semaphore& );
+
+#ifdef WIN32
+    HANDLE          m_hSemaphore;
+#else
+    sem_t           m_Semaphore;
+#endif
+};
+
+}} //namespace AVT::VmbAPI
+
+#endif //AVT_VMBAPI_MUTEX

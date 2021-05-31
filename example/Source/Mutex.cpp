@@ -6,9 +6,9 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        Mutex.cpp
 
-  Description: Main include file for Vimba CPP API.
+  Description: Implementation of class AVT::VmbAPI::Mutex.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +25,72 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#include <math.h>
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaCPP/Include/Mutex.h>
+#include <VimbaCPP/Include/LoggerDefines.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+Mutex::Mutex( bool bInitLock )
+#ifdef WIN32
+    :   m_hMutex( NULL )
+#endif
+{
+#ifdef WIN32
+    m_hMutex = CreateMutex( NULL, FALSE, NULL );
+    if( NULL == m_hMutex )
+    {
+        LOG_FREE_TEXT( "Could not create mutex." );
+        throw std::bad_alloc();
+    }
+#else
+    pthread_mutex_init(&m_Mutex, NULL);
+#endif
+
+    if( true == bInitLock )
+    {
+        Lock();
+    }
+}
+
+Mutex::~Mutex()
+{  
+#ifdef WIN32
+    CloseHandle( m_hMutex );
+#else
+    pthread_mutex_destroy(&m_Mutex);
+#endif
+}
+
+Mutex::Mutex( const Mutex& )
+{
+    // No copy ctor
+}
+
+Mutex& Mutex::operator=( const Mutex& )
+{
+    // No assignment operator
+    return *this;
+}
+
+void Mutex::Lock()
+{
+#ifdef WIN32
+    WaitForSingleObject( m_hMutex, INFINITE );
+#else
+    pthread_mutex_lock( &m_Mutex );
+#endif
+}
+
+void Mutex::Unlock()
+{  
+#ifdef WIN32
+    ReleaseMutex( m_hMutex );
+#else
+    pthread_mutex_unlock( &m_Mutex );
+#endif
+}
+
+}} //namespace AVT::VmbAPI

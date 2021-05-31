@@ -5,10 +5,13 @@
   prior written consent of Allied Vision Technologies is prohibited.
 
 -------------------------------------------------------------------------------
+ 
+  File:        DefaultCameraFactory.h
 
-  File:        VimbaCPP.h
-
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of class AVT::VmbAPI::DefaultCameraFactory used to
+               create new Camera objects if no user defined camera factory
+               class was provided.
+               Intended for use in the implementation of Vimba CPP API.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +28,28 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_DEFAULTCAMERAFACTORY_H
+#define AVT_VMBAPI_DEFAULTCAMERAFACTORY_H
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <VimbaCPP/Include/ICameraFactory.h>
 
-#include <VimbaCPPCommon.h>
+namespace AVT {
+namespace VmbAPI {
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+class DefaultCameraFactory : public virtual ICameraFactory
+{
+  public:
+    virtual CameraPtr CreateCamera( const char         *pCameraID,
+                                    const char         *pCameraName,
+                                    const char         *pCameraModel,
+                                    const char         *pCameraSerialNumber,
+                                    const char         *pInterfaceID,
+                                    VmbInterfaceType    interfaceType,
+                                    const char         *pInterfaceName,
+                                    const char         *pInterfaceSerialNumber,
+                                    VmbAccessModeType   interfacePermittedAccess );
+};
+
+}} // namespace AVT::VmbAPI
+
+#endif

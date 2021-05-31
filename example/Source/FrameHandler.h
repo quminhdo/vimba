@@ -6,9 +6,9 @@
 
 -------------------------------------------------------------------------------
 
-  File:        VimbaCPP.h
+  File:        FrameHandler.h
 
-  Description: Main include file for Vimba CPP API.
+  Description: Definition of class AVT::VmbAPI::FrameHandler.
 
 -------------------------------------------------------------------------------
 
@@ -25,28 +25,40 @@
 
 =============================================================================*/
 
-// #include <VimbaCPP/Include/VimbaCPPCommon.h>
+#ifndef AVT_VMBAPI_FRAMEHANDLER_H
+#define AVT_VMBAPI_FRAMEHANDLER_H
 
-// #include <VimbaCPP/Include/Camera.h>
-// #include <VimbaCPP/Include/Interface.h>
-// #include <VimbaCPP/Include/VimbaSystem.h>
-// #include <VimbaCPP/Include/FeatureContainer.h>
-// #include <VimbaCPP/Include/ICameraFactory.h>
-// #include <VimbaCPP/Include/ICameraListObserver.h>
-// #include <VimbaCPP/Include/IInterfaceListObserver.h>
-// #include <VimbaCPP/Include/IFeatureObserver.h>
-// #include <VimbaCPP/Include/IFrameObserver.h>
-// #include <VimbaCPP/Include/Frame.h>
+#include <vector>
 
-#include <VimbaCPPCommon.h>
+#include "VimbaC/Include/VmbCommonTypes.h"
+#include "VimbaCPP/Include/BasicLockable.h"
+#include "VimbaCPP/Include/SharedPointerDefines.h"
+#include "VimbaCPP/Include/Frame.h"
+#include "VimbaCPP/Include/IFrameObserver.h"
+#include "VimbaCPP/Include/Mutex.h"
 
-#include <Camera.h>
-#include <Interface.h>
-#include <VimbaSystem.h>
-#include <FeatureContainer.h>
-#include <ICameraFactory.h>
-#include <ICameraListObserver.h>
-#include <IInterfaceListObserver.h>
-#include <IFeatureObserver.h>
-#include <IFrameObserver.h>
-#include <Frame.h>
+namespace AVT {
+namespace VmbAPI {
+
+enum { FRAME_HDL=0, };
+
+class FrameHandler
+{
+  public:
+    static void VMB_CALL FrameDoneCallback( const VmbHandle_t handle, VmbFrame_t *pFrame );
+
+    FrameHandler( FramePtr pFrame, IFrameObserverPtr pFrameObserver );
+
+    FramePtr GetFrame() const;
+    MutexPtr&               Mutex() { return m_pMutex; }
+  private:
+    IFrameObserverPtr       m_pObserver;
+    FramePtr                m_pFrame;
+    MutexPtr                m_pMutex;
+};
+
+typedef std::vector<FrameHandlerPtr> FrameHandlerPtrVector;
+
+}} // namespace AVT::VmbAPI
+
+#endif
