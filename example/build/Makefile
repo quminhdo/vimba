@@ -3,7 +3,7 @@ PROJECT_NAME            = AsynchronousGrabConsole
 PROJECT_DIR             = ..
 VIMBASDK_DIR		= $(PROJECT_DIR)
 # MAKE_INCLUDE_DIR        = $(CURDIR)/$(EXAMPLES_DIR)/Build/Make
-MAKE_INCLUDE_DIR        = $(VIMBASDK_DIR)/$(VimbaCPP)/Build/Make
+MAKE_INCLUDE_DIR        = $(VIMBASDK_DIR)/VimbaCPP/Build/Make
 
 include $(MAKE_INCLUDE_DIR)/Common.mk
 
