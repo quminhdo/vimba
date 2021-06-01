@@ -25,6 +25,8 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =============================================================================*/
+#ifndef AVT_VMBAPI_EXAMPLES_FRAMEOBSERVER
+#define AVT_VMBAPI_EXAMPLES_FRAMEOBSERVER
 
 #include <queue>
 #include "VimbaCPP/Include/VimbaCPP.h"
@@ -102,3 +104,4 @@ private:
 };
 
 }}} // namespace AVT::VmbAPI::Examples
+#endif
