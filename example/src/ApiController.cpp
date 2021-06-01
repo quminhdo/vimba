@@ -96,7 +96,7 @@ void ApiController::ShutDown()
 // Returns:
 //  An API status code
 //
-VmbErrorType ApiController::StartContinuousImageAcquisition( string cameraID )
+VmbErrorType ApiController::StartContinuousImageAcquisition( std::string cameraID )
 {
     // Open the desired camera by its ID
     VmbErrorType res = m_system.OpenCameraByID( cameraID.c_str(), VmbAccessModeFull, m_pCamera );
