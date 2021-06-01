@@ -32,7 +32,6 @@
 
 #include "FrameObserver.h"
 
-#include "TransformImage.h"
 #include "opencv2/opencv.hpp"
 #include "opencv2/core/core.hpp"
 using namespace cv;

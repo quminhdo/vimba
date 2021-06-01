@@ -28,7 +28,6 @@
 
 #include <queue>
 #include "VimbaCPP/Include/VimbaCPP.h"
-#include "ProgramConfig.h"
 #include "opencv2/opencv.hpp"
 #include "opencv2/core/core.hpp"
 
